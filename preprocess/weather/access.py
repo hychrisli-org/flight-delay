@@ -2,7 +2,7 @@ import mysql.connector
 import os
 
 
-class GenericConnector(object):
+class DatabaseAccess(object):
 
     def __init__(self):
 

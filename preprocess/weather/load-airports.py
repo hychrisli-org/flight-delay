@@ -1,4 +1,4 @@
-from connect import GenericConnector
+from access import DatabaseAccess
 from os.path import expanduser
 import csv
 
@@ -6,9 +6,9 @@ import csv
 home = expanduser("~")
 dataDir = home + '/data/255-team-proj/input/airports.dat'
 data = csv.reader(file(dataDir))
-connector = GenericConnector()
-cursor = connector.getCursor()
-cnn = connector.getConn()
+access = DatabaseAccess()
+cursor = access.getCursor()
+cnn = access.getConn()
 
 for row in data:
     if row[3] == 'United States':
@@ -26,5 +26,5 @@ for row in data:
             '%s, %s, %s)', row)
 cnn.commit()
 cursor.close()
-connector.close()
+access.close()
 

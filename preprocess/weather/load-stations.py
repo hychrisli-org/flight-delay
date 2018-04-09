@@ -1,4 +1,4 @@
-from connect import GenericConnector
+from access import DatabaseAccess
 from os.path import expanduser
 import csv
 
@@ -6,9 +6,9 @@ import csv
 home = expanduser("~")
 dataDir = home + '/data/255-team-proj/input/isd-history.csv'
 data = csv.reader(file(dataDir))
-connector = GenericConnector()
-cursor = connector.getCursor()
-cnn = connector.getConn()
+access = DatabaseAccess()
+cursor = access.getCursor()
+cnn = access.getConn()
 numIdx = {6, 7, 8}
 
 for row in data:
@@ -25,5 +25,5 @@ for row in data:
             '%s, %s, %s, %s, %s, %s, %s)', row)
 cnn.commit()
 cursor.close()
-connector.close()
+access.close()
 
