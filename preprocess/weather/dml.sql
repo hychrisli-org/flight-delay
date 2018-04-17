@@ -8,3 +8,19 @@ FROM AIRPORT a, STATION s
 WHERE s.begin <= '20150101' AND s.end >= '20171231'
 HAVING distance < 15
 ORDER BY s.state, a.iata, distance
+
+
+-- SELECT weather station extract that are near airports
+SELECT a.iata, a.icao, a.city, s.usaf, s.wban,
+    3956 * 2 * ASIN(SQRT(POWER(SIN((a.lat - abs(s.lat)) * pi()/180 / 2), 2)
+    + COS(a.lat * pi()/180 ) * COS(abs(s.lat) * pi()/180)
+    * POWER(SIN((a.lot - s.lot) * pi()/180 / 2), 2) )) as  distance
+FROM AIRPORT a, EXTRACT_STATION s
+HAVING distance < 15;
+
+CREATE TABLE NEARBY_STATION AS SELECT a.iata, a.icao, a.city, s.usaf, s.wban,
+    3956 * 2 * ASIN(SQRT(POWER(SIN((a.lat - abs(s.lat)) * pi()/180 / 2), 2)
+    + COS(a.lat * pi()/180 ) * COS(abs(s.lat) * pi()/180)
+    * POWER(SIN((a.lot - s.lot) * pi()/180 / 2), 2) )) as  distance
+FROM AIRPORT a, EXTRACT_STATION s
+HAVING distance < 15;
