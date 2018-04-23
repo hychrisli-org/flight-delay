@@ -57,3 +57,5 @@ CREATE TABLE WEATHER
     liqu_depth      DECIMAL(4,1),
     snow_depth      INT
 );
+
+CREATE INDEX WEATHER_IDX on WEATHER(usaf, wban, utc);

@@ -102,3 +102,10 @@ ENV/
 
 .idea/
 data/
+
+node_modules/
+target/
+public/
+
+*.log
+*.env
