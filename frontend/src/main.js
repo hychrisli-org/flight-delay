@@ -8,8 +8,10 @@ import Flight from './flight'
 
 const Main = () => (
   <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
-    <Trip/>
-    <Flight/>
+    <div>
+      <Trip/>
+      <Flight/>
+    </div>
   </MuiThemeProvider>
 );
 

@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import {Field, reduxForm } from 'redux-form';
 import FlatButton from 'material-ui/FlatButton';
 import AutoComplete from 'material-ui/AutoComplete';
 import DatePicker from 'material-ui/DatePicker';
 import airports from '../data/airports';
 import airlines from '../data/airlines';
+
 
 const cardStyle = {
   display: 'inline-block',
@@ -16,17 +18,58 @@ const cardStyle = {
   padding: '1%'
 };
 
-const dataSourceConfig = {
-  text: 'textKey',
-  value: 'valueKey',
-};
+const renderFromAirport = ({input}) => (
+  <AutoComplete
+    hintText="From"
+    {...input}
+    dataSource={airports.dataSource}
+    filter={AutoComplete.fuzzyFilter}
+    onUpdateInput={(value) => {input.onChange(airports.info[value])}}
+  />
+);
+
+const renderToAirport = ({input}) => (
+  <AutoComplete
+    {...input}
+    hintText="To"
+    dataSource={airports.dataSource}
+    filter={AutoComplete.fuzzyFilter}
+    onUpdateInput={(value) => {input.onChange(airports.info[value])}}
+  />
+);
+
+const renderAirline = ({input}) => (
+  <AutoComplete
+    {...input}
+    name={"airline"}
+    hintText="Airline"
+    dataSource={airlines.dataSource}
+    filter={AutoComplete.fuzzyFilter}
+    onUpdateInput={(value) => {input.onChange(airlines.info[value])}}
+  />
+);
+
+const renderDatePicker = ({ input, defaultValue, meta: { touched, error } }) => (
+  <DatePicker
+    hintText="Date"
+    errorText = {touched && error}
+    {...input}
+    value = {input.value !== ''? new Date(input.value) : null}
+    onChange = {(event, value) => {console.log(value); input.onChange(value)}} />
+);
 
 
 class TripInputCard extends Component {
 
+  submit = (values) =>  {
+    console.log(values);
+  };
 
   render() {
-    return(
+
+    const{handleSubmit} = this.props;
+
+    return (
       <Card style={cardStyle}>
         <CardTitle title="Search for Your Flight"/>
         <CardText>
@@ -36,36 +79,38 @@ class TripInputCard extends Component {
           Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
         </CardText>
 
-        <AutoComplete
-          hintText="From"
-          dataSource={airports}
-          dataSourceConfig={dataSourceConfig}
-          filter={AutoComplete.fuzzyFilter}
-        />
-        <AutoComplete
-          hintText="To"
-          dataSource={airports}
-          dataSourceConfig={dataSourceConfig}
-          filter={AutoComplete.fuzzyFilter}
-        />
-        <AutoComplete
-          hintText="Airline"
-          dataSource={airlines}
-          dataSourceConfig={dataSourceConfig}
-          filter={AutoComplete.fuzzyFilter}
-        />
-        <DatePicker hintText="Date" />
-
-
-
-        <CardActions>
-          <FlatButton label="Action1"/>
-          <FlatButton label="Action2"/>
-        </CardActions>
+        <form onSubmit={handleSubmit(this.submit)}>
+          <Field
+            name={"fromAirport"}
+            component={renderFromAirport}
+            required={true}
+            />
+          <Field
+            name={"toAirport"}
+            component={renderToAirport}
+            required={true}
+          />
+          <Field
+            name={"airline"}
+            component={renderAirline}
+            required={true}
+          />
+          <Field
+            name={"date"}
+            showTime={false}
+            component={renderDatePicker}
+            required={true}
+          />
+          <CardActions>
+            <FlatButton type="submit" label="Submit"/>
+            <FlatButton type="reset" label="Reset"/>
+          </CardActions>
+        </form>
       </Card>
     )
   }
 }
 
-
-export default TripInputCard;
+export default reduxForm({
+  form: 'TripForm',
+})(TripInputCard);
