@@ -14,7 +14,7 @@ const MyMapComponent = compose(
     googleMapURL:
       "https://maps.googleapis.com/maps/api/js?key=AIzaSyDmwEffgb-H8eO-M8yteqwPLRkzy-AOIZY&v=3.exp&libraries=geometry,drawing,places",
     loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `100vh` }} />,
+    containerElement: <div style={{ height: 480 }} />,
     mapElement: <div style={{ height: `100%` }} />
   }),
   lifecycle({
@@ -23,7 +23,7 @@ const MyMapComponent = compose(
 
       this.setState({
         mapProjection: null,
-        zoom: 5,
+        zoom: 3,
         onMapMounted: ref => {
           refs.map = ref;
         },

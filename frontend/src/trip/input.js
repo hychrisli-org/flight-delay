@@ -3,6 +3,8 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 import FlatButton from 'material-ui/FlatButton';
 import AutoComplete from 'material-ui/AutoComplete';
 import DatePicker from 'material-ui/DatePicker';
+import airports from '../data/airports';
+import airlines from '../data/airlines';
 
 const cardStyle = {
   display: 'inline-block',
@@ -14,11 +16,14 @@ const cardStyle = {
   padding: '1%'
 };
 
+const dataSourceConfig = {
+  text: 'textKey',
+  value: 'valueKey',
+};
+
+
 class TripInputCard extends Component {
 
-  state = {
-    dataSource: [],
-  };
 
   render() {
     return(
@@ -33,15 +38,21 @@ class TripInputCard extends Component {
 
         <AutoComplete
           hintText="From"
-          dataSource={this.state.dataSource}
+          dataSource={airports}
+          dataSourceConfig={dataSourceConfig}
+          filter={AutoComplete.fuzzyFilter}
         />
         <AutoComplete
           hintText="To"
-          dataSource={this.state.dataSource}
+          dataSource={airports}
+          dataSourceConfig={dataSourceConfig}
+          filter={AutoComplete.fuzzyFilter}
         />
         <AutoComplete
           hintText="Airline"
-          dataSource={this.state.dataSource}
+          dataSource={airlines}
+          dataSourceConfig={dataSourceConfig}
+          filter={AutoComplete.fuzzyFilter}
         />
         <DatePicker hintText="Date" />
 

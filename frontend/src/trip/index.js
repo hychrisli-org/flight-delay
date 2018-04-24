@@ -8,11 +8,12 @@ const styles = {
   paperContainer: {
     height: 600,
     textAlign: 'center',
-    backgroundImage: `url(${Image})`
+    backgroundImage: `url(${Image})`,
+    backgroundSize: "cover",
   }
 };
 
-export default class Home extends React.Component{
+export default class Trip extends React.Component{
   render(){
     return(
       <Paper style={styles.paperContainer}>
