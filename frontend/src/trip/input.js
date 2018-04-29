@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import {Field, reduxForm } from 'redux-form';
+import {connect} from 'react-redux'
 import FlatButton from 'material-ui/FlatButton';
 import AutoComplete from 'material-ui/AutoComplete';
 import DatePicker from 'material-ui/DatePicker';
 import airports from '../data/airports';
 import airlines from '../data/airlines';
+import PropTypes from 'prop-types'
 
+import {scheduleRequest} from './actions';
 
 const cardStyle = {
   display: 'inline-block',
@@ -61,8 +64,22 @@ const renderDatePicker = ({ input, defaultValue, meta: { touched, error } }) => 
 
 class TripInputCard extends Component {
 
+  static propTypes = {
+    handleSubmit: PropTypes.func,
+    scheduleRequest: PropTypes.func,
+    trip: PropTypes.shape({
+      requesting: PropTypes.bool,
+      successful: PropTypes.bool,
+      messages: PropTypes.array,
+      errors: PropTypes.array,
+    })
+  };
+
+
+
   submit = (values) =>  {
     console.log(values);
+    this.props.scheduleRequest(values);
   };
 
   render() {
@@ -111,6 +128,14 @@ class TripInputCard extends Component {
   }
 }
 
-export default reduxForm({
-  form: 'TripForm',
-})(TripInputCard);
+const mapStateToProps = state => ({
+  trip: state.trip,
+});
+
+const connected = connect(mapStateToProps, {scheduleRequest})(TripInputCard);
+
+const formed = reduxForm({
+  form: 'trip',
+})(connected);
+
+export default formed;
