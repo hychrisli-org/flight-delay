@@ -1,4 +1,4 @@
-import moment from 'moment'
+//import moment from 'moment'
 import momentTz from 'moment-timezone'
 import base64 from 'base-64';
 import queryString from 'query-string'
@@ -33,9 +33,7 @@ function airportApi(icao){
   })
     .then(handleApiErrors)
     .then(response => response.json())
-    .then(json => {
-      console.log(json);
-      return json})
+    .then(json => json)
     .catch(error => {throw error})
 }
 
@@ -45,12 +43,30 @@ function* tripFlow(action){
     console.log(action);
     const{form} = action;
     console.log(form);
+    let date = new Date(form.date);
+    date = new (date.setHours(0));
+    console.log(date);
+
+
+
     //startDate = new Date(form.date).getTIm / 1000;
-    //startDate = momentTz.tz(form.date, 'YYYY-MM-DD');
-    const origin = form.fromAirport.iata;
+/*
+    const originIata = form.fromAirport.iata;
+    const origin = yield call(airportApi, originIata);
     console.log(origin);
-    const response = yield call(airportApi, origin);
-    console.log(response);
+
+    const destIata = form.toAirport.iata;
+    const dest = yield call(airportApi, destIata);
+    console.log(dest);
+
+    let timezone = origin.AirportInfoResult.timezone;
+    timezone=timezone.substring(1);
+    console.log(timezone);
+    let startDate = momentTz(form.date, timezone);
+    console.log(startDate);
+    console.log(startDate.tz("America/Los_Angeles").format())
+    console.log(startDate.tz("America/New_York").format())
+    console.log(startDate.valueOf());*/
     //destination = form.toAirport;
     //airline = form.airline;
     //const response = yield call(tripApi, {startDate, orgin, })

@@ -64,3 +64,39 @@ WHERE es.usaf = w.usaf AND es.wban = w.wban
 GROUP BY es.iata, w.`time`;
 
 CREATE INDEX AIRPORT_WEATHER_IDX on AIRPORT_WEATHER(iata, ts);
+
+
+ALTER TABLE AIRPORT_WEATHER
+    add column (local_ts datetime),
+    add column (tz varchar(30)),
+    add column (fl_date date),
+    add column (tm time),
+    add column (code varchar(7))
+
+
+UPDATE AIRPORT_WEATHER w
+JOIN AIRPORT_TIMEZONE ts ON w.iata = ts.iata
+SET
+w.local_ts = CONVERT_TZ(w.ts, 'UTC', ts.tz),
+w.tz = ts.tz;
+
+UPDATE AIRPORT_WEATHER w
+SET fl_date = DATE(local_ts),
+    tm = HOUR(local_ts),
+    code = CONCAT(ASCII(SUBSTRING(iata,1,1)), ASCII(SUBSTRING(iata, 2,1)),ASCII(SUBSTRING(iata, 3,1)))
+
+
+SELECT
+DATE(local_ts),
+HOUR(local_ts),
+CONCAT(ASCII(SUBSTRING(iata,1,1)), ASCII(SUBSTRING(iata, 2,1)),ASCII(SUBSTRING(iata, 3,1)))
+FROM AIRPORT_WEATHER
+WHERE local_ts is not null LIMIT 10;
+
+
+SELECT
+w.*,
+ts.tz,
+CONVERT_TZ(w.ts, 'UTC', ts.tz)
+FROM AIRPORT_WEATHER w
+JOIN AIRPORT_TIMEZONE ts ON w.iata = ts.iata

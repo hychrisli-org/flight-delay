@@ -8,6 +8,7 @@ import DatePicker from 'material-ui/DatePicker';
 import airports from '../data/airports';
 import airlines from '../data/airlines';
 import PropTypes from 'prop-types'
+import moment from 'moment';
 
 import {scheduleRequest} from './actions';
 

@@ -59,3 +59,25 @@ CREATE TABLE WEATHER
 );
 
 CREATE INDEX WEATHER_IDX on WEATHER(usaf, wban, utc);
+
+ALTER IGNORE TABLE AIRPORT_WEATHER
+ADD UNIQUE INDEX airport_weather_uidx (code, local_ts);
+
+use delay;
+
+CREATE TABLE DELAY_WEATHER AS
+SELECT
+fd.*,
+aw.wind_angle,
+aw.wind_speed,
+aw.vis,
+aw.temp,
+aw.liqu_depth,
+aw.snow_depth
+FROM
+FLIGHT_DELAY fd JOIN flight.AIRPORT_WEATHER aw
+ on fd.dest = aw.code and fd.local_ts = aw.local_ts
+WHERE
+    aw.local_ts is not null
+
+CREATE INDEX delay_weather_idx on DELAY_WEATHER(`year`, `month`, `day_of_month`);
