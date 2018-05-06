@@ -9,12 +9,16 @@ class DatabaseAccess(object):
         config = {
             'user': os.environ['DB_USER'],
             'passwd': os.environ['DB_PASS'],
-            'host': 'localhost',
+            'host': os.environ['DB_HOST'],
+            'port': 3306,
             'db': 'flight',
-            'autocommit': False,
-            'charset': 'utf8',
+            'autocommit': True,
         }
         self.conn = mysql.connector.connect(**config)
+
+        if self.conn:
+            print ("Connection Successful")
+
         self.cursor = self.conn.cursor()
 
     def getConn(self):
