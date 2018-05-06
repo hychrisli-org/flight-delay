@@ -135,3 +135,30 @@ delay.FLIGHT_DELAY fd,
 flight.AIRPORT_CLUSTER ac
 WHERE fd.dest = ac.dest
 ORDER BY fd.fl_date, fd.dest, fd.crs_dep_time, fd.unique_carrier;
+
+
+CREATE TABLE DELAY_WEATHER_CLUSTER AS
+SELECT
+dw.year,
+dw.quarter,
+dw.month,
+dw.day_of_month,
+dw.day_of_week,
+dw.fl_date,
+dw.unique_carrier,
+dw.flight_num,
+dw.origin,
+dw.dest,
+dw.crs_dep_time,
+dw.crs_arr_time,
+dw.distance,
+dw.vis,
+dw.temp,
+dw.liqu_depth,
+dw.snow_depth,
+ac.cluster,
+dw.label
+FROM
+delay.DELAY_WEATHER dw,
+flight.AIRPORT_CLUSTER ac
+WHERE dw.dest = ac.dest
