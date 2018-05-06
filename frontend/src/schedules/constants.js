@@ -1,0 +1,1 @@
+export const SCHEDULES_SET = 'SET_SCHEDULES';
