@@ -1,9 +1,9 @@
 from flask import Flask, request, jsonify
-
-from flask_restful import reqparse, Resource, Api
+from data_handler import readAirportClusters
 
 app = Flask(__name__)
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
+clusterDict = readAirportClusters()
 
 
 @app.route('/classify', methods = ['GET', 'POST'])
@@ -26,9 +26,12 @@ def classify():
         temp = getReqVal('temp')
         liquDepth = getReqVal('liquDepth')
         snowDepth = getReqVal('snowDepth')
-
         if not (origin and dest and airline and flNum and flDate and depTime and arrTime and distance):
             return replyMsg("Contains Empty Input")
+
+        print (clusterDict.get(origin))
+        print (clusterDict.get(dest))
+
         return replyMsg("Got It")
 
 def replyMsg(msg):
