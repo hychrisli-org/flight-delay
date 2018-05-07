@@ -1,2 +1,3 @@
 export const LOCATIONS_SET = 'LOCATIONS_SET';
 export const SCHEDULES_SET = 'SCHEDULES_SET';
+export const MY_FLIGHT_SET = 'MY_FLIGHT_SET';

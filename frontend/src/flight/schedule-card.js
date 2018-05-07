@@ -4,6 +4,7 @@ import Chip from 'material-ui/Chip';
 import moment from 'moment'
 import 'moment-timezone'
 import {connect} from "react-redux";
+import {setMyFlight} from "../stores/actions";
 
 const styles = {
 
@@ -33,18 +34,14 @@ class ScheduleCard extends Component {
 
   constructor(props){
     super(props);
-
-    this.handleRequestDelete = this.handleRequestDelete.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.genChip = this.genChip.bind(this);
   }
 
-  handleRequestDelete() {
-  alert('You clicked the delete button.');
-  }
-
-  handleClick() {
-    alert('You clicked the Chip.');
+  handleClick(chipName, flight) {
+    console.log(flight);
+    this.props.setMyFlight(flight);
+    alert('You picked your flight: ' + chipName);
   }
 
   genChip(flight, index){
@@ -55,13 +52,14 @@ class ScheduleCard extends Component {
     const arrivalTime = moment.unix(flight.arrivaltime).tz(this.props.locations.dest.timezone).format();
     const depTimeStr = departureTime.slice(11, 16);
     const arrTimeStr = arrivalTime.slice(11, 16);
+    const chipName = flightId + " | " + depTimeStr + " - " + arrTimeStr
     return (
       <Chip
         key={index}
         backgroundColor={'#d1e1f9'}
-        onClick={this.handleClick}
+        onClick={() => this.handleClick(chipName, flight)}
         style={styles.chip}
-      >{flightId + " | " + depTimeStr + " - " + arrTimeStr}</Chip>
+      >{chipName}</Chip>
     )
 
   }
@@ -98,6 +96,6 @@ const mapStateToProps = state => ({
   locations: state.locations,
 });
 
-const CnxScheduleCard = connect(mapStateToProps)(ScheduleCard);
+const CnxScheduleCard = connect(mapStateToProps, {setMyFlight})(ScheduleCard);
 
 export default CnxScheduleCard;
