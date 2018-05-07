@@ -16,6 +16,7 @@ const styles = {
 };
 
 export default class Flight extends React.Component{
+
   render(){
     return(
       <Paper style={styles.paperContainer}>

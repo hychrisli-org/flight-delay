@@ -41,18 +41,14 @@ class ScheduleCard extends Component {
 
   handleClick(chipName, flight, arrivalTime) {
 
-    const { dispatch} = this.props;
-    dispatch(setMyFlight(flight));
-
+    const { dispatch } = this.props;
     console.log(this.props.locations);
     console.log(flight);
     const iata = flight.destination.substring(1);
     const localTsStr = arrivalTime.slice(0, 10) + ' ' + arrivalTime.slice(11, 19);
-    console.log(iata);
-    console.log(localTsStr);
-    // this.props.requestWeather({iata, localTsStr});
     alert('You picked your flight: ' + chipName);
 
+    dispatch(setMyFlight(flight));
     dispatch(requestWeather({iata, localTsStr}))
   }
 
@@ -66,8 +62,6 @@ class ScheduleCard extends Component {
     const depTimeStr = departureTime.format().slice(11, 16);
     const arrTimeStr = arrivalTime.format().slice(11, 16);
     const lastYearArrTimStr = arrivalTime.subtract(1, 'year').add(30, 'minute').startOf('hour').format();
-    console.log("lastYearArrTimStr", lastYearArrTimStr);
-
 
     const chipName = flightId + " | " + depTimeStr + " - " + arrTimeStr;
     return (
@@ -87,9 +81,6 @@ class ScheduleCard extends Component {
     const hasSchedules = schedules != null && schedules.length > 0;
     if (hasSchedules)
       schedules.sort((a, b) => {return a.departuretime > b.departuretime ? 1 : a.departuretime < b.departuretime ? -1 : 0});
-    console.log(schedules);
-
-
     return(
       <Card style={styles.card}>
         <CardTitle title="Flights" subtitle="Select a Flight" />
