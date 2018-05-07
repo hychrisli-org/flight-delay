@@ -6,6 +6,7 @@ import FontIcon from 'material-ui/FontIcon';
 import SvgIconFace from 'material-ui/svg-icons/action/face';
 import {blue300, indigo900} from 'material-ui/styles/colors';
 import Map from './map'
+import {connect} from "react-redux";
 
 const styles = {
 
@@ -30,7 +31,7 @@ const styles = {
 
 };
 
-class MapCard extends Component {
+class ScheduleCard extends Component {
 
   handleRequestDelete() {
   alert('You clicked the delete button.');
@@ -43,6 +44,11 @@ class MapCard extends Component {
   render() {
     const handleRequestDelete = this.handleRequestDelete;
     const handleClick = this.handleClick;
+
+    // const schedules = ["you", "me"];
+    const schedules = this.props.schedules.schedules;
+    console.log("schedule flight", this.props.schedules.schedules);
+
     return(
       <Card style={styles.card}>
         <CardTitle title="Flights" subtitle="Select a Flight" />
@@ -118,6 +124,12 @@ class MapCard extends Component {
             </Avatar>
             Colored Chip
           </Chip>
+
+          {schedules != null && schedules.length > 0 && (schedules.map((flight, index) => {
+            return (
+              <Chip key={index}>{flight.actual_ident}</Chip>
+            )}))}
+
         </div>
 
       </Card>
@@ -125,5 +137,10 @@ class MapCard extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  schedules: state.schedules,
+});
 
-export default MapCard;
+const CnxScheduleCard = connect(mapStateToProps)(ScheduleCard);
+
+export default CnxScheduleCard;
