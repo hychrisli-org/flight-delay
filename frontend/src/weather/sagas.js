@@ -1,8 +1,6 @@
-import moment from 'moment'
 import 'moment-timezone'
-import queryString from 'query-string'
 import {call, put, takeLatest} from 'redux-saga/effects'
-import {timeout} from '../lib/request'
+import {timeout} from "../lib/request";
 
 import {
   WEATHER_SUCCESS,
@@ -10,20 +8,23 @@ import {
   WEATHER_REQUESTING
 } from './constants';
 import {handleApiErrors} from "../lib/api-errors";
-import {setLocations, setSchedules} from "../stores/actions";
+import {setArrivalWeather} from "../stores/actions";
 
 
-const forecastUrl = `${process.env.REACT_APP_WEATHER_FORECAST_URL}`;
-const historyUrl = `${process.env.REACT_APP_WEATHER_HISTORY_URL}`;
-const apiKey = `${process.env.REACT_APP_WEATHER_APIKEY}`;
+const weatherUrl = `${process.env.REACT_APP_WEATHER_URL}`;
 
+function weatherApi(iata, localTsStr){
 
-function forecastApi(lat, lon){
-  const params = {lat, lon, units: 'metric', appid: apiKey};
-  const url = `http://localhost:8080/${forecastUrl}?${queryString.stringify(params)}`;
+  console.log("weatherApi", iata);
+  console.log("weatherApi", localTsStr);
+  console.log("weatherApi", weatherUrl);
 
-  return timeout(5000, fetch(url, {
-    method: 'GET'
+  return timeout(5000, fetch(weatherUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({iata, localTsStr}),
   }))
     .then(response => {
       const json = response.json();
@@ -34,24 +35,15 @@ function forecastApi(lat, lon){
     .catch(handleApiErrors);
 }
 
-function historyApi(icao){
-
-  const params = {airportCode: icao};
-  const url = `http://localhost:8080/${historyUrl}?${queryString.stringify(params)}`;
-
-  return fetch(url, {
-    method: 'GET'
-  })
-    .then(handleApiErrors)
-    .then(response => response.json())
-    .then(json => json)
-    .catch(error => {throw error})
-}
-
 function* weatherFlow(action){
 
   try {
     const{form} = action;
+    console.log("here", form);
+    const arrivalWeather = yield call(weatherApi, form.iata, form.localTsStr);
+    console.log(arrivalWeather);
+    yield put(setArrivalWeather(arrivalWeather));
+    yield put({type:WEATHER_SUCCESS})
   } catch (error) {
     yield put({type: WEATHER_ERROR, error});
   }

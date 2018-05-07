@@ -5,6 +5,7 @@ import moment from 'moment'
 import 'moment-timezone'
 import {connect} from "react-redux";
 import {setMyFlight} from "../stores/actions";
+import {requestWeather} from "../weather/actions";
 
 const styles = {
 
@@ -38,26 +39,42 @@ class ScheduleCard extends Component {
     this.genChip = this.genChip.bind(this);
   }
 
-  handleClick(chipName, flight) {
+  handleClick(chipName, flight, arrivalTime) {
+
+    const { dispatch} = this.props;
+    dispatch(setMyFlight(flight));
+
+    console.log(this.props.locations);
     console.log(flight);
-    this.props.setMyFlight(flight);
+    const iata = flight.destination.substring(1);
+    const localTsStr = arrivalTime.slice(0, 10) + ' ' + arrivalTime.slice(11, 19);
+    console.log(iata);
+    console.log(localTsStr);
+    // this.props.requestWeather({iata, localTsStr});
     alert('You picked your flight: ' + chipName);
+
+    dispatch(requestWeather({iata, localTsStr}))
   }
 
   genChip(flight, index){
 
     const isNotActual = flight.actual_ident === null || flight.actual_ident === "";
     const flightId = isNotActual ? flight.ident : flight.actual_ident;
-    const departureTime = moment.unix(flight.departuretime).tz(this.props.locations.origin.timezone).format();
-    const arrivalTime = moment.unix(flight.arrivaltime).tz(this.props.locations.dest.timezone).format();
-    const depTimeStr = departureTime.slice(11, 16);
-    const arrTimeStr = arrivalTime.slice(11, 16);
-    const chipName = flightId + " | " + depTimeStr + " - " + arrTimeStr
+    const departureTime = moment.unix(flight.departuretime).tz(this.props.locations.origin.timezone);
+    const arrivalTime = moment.unix(flight.arrivaltime).tz(this.props.locations.dest.timezone);
+
+    const depTimeStr = departureTime.format().slice(11, 16);
+    const arrTimeStr = arrivalTime.format().slice(11, 16);
+    const lastYearArrTimStr = arrivalTime.subtract(1, 'year').add(30, 'minute').startOf('hour').format();
+    console.log("lastYearArrTimStr", lastYearArrTimStr);
+
+
+    const chipName = flightId + " | " + depTimeStr + " - " + arrTimeStr;
     return (
       <Chip
         key={index}
         backgroundColor={'#d1e1f9'}
-        onClick={() => this.handleClick(chipName, flight)}
+        onClick={() => this.handleClick(chipName, flight, lastYearArrTimStr)}
         style={styles.chip}
       >{chipName}</Chip>
     )
@@ -91,8 +108,11 @@ class ScheduleCard extends Component {
 const mapStateToProps = state => ({
   schedules: state.schedules,
   locations: state.locations,
+  weather: state.weather,
+
 });
 
-const CnxScheduleCard = connect(mapStateToProps, {setMyFlight})(ScheduleCard);
+
+const CnxScheduleCard = connect(mapStateToProps)(ScheduleCard);
 
 export default CnxScheduleCard;
