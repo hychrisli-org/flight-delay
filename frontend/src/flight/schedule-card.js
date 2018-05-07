@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import {Card, CardTitle, CardText} from 'material-ui/Card';
-import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
-import FontIcon from 'material-ui/FontIcon';
-import SvgIconFace from 'material-ui/svg-icons/action/face';
-import {blue300, indigo900} from 'material-ui/styles/colors';
-import Map from './map'
+import moment from 'moment'
+import 'moment-timezone'
+import {connect} from "react-redux";
+import {setMyFlight} from "../stores/actions";
 
 const styles = {
 
@@ -16,7 +15,7 @@ const styles = {
     transitionDuration: '0.3s',
     height: 500,
     opacity: 0.7,
-    padding: '1%'
+    padding: '5%'
   },
 
   chip: {
@@ -30,94 +29,58 @@ const styles = {
 
 };
 
-class MapCard extends Component {
+class ScheduleCard extends Component {
 
-  handleRequestDelete() {
-  alert('You clicked the delete button.');
+
+  constructor(props){
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+    this.genChip = this.genChip.bind(this);
   }
 
-  handleClick() {
-    alert('You clicked the Chip.');
+  handleClick(chipName, flight) {
+    console.log(flight);
+    this.props.setMyFlight(flight);
+    alert('You picked your flight: ' + chipName);
   }
+
+  genChip(flight, index){
+
+    const isNotActual = flight.actual_ident === null || flight.actual_ident === "";
+    const flightId = isNotActual ? flight.ident : flight.actual_ident;
+    const departureTime = moment.unix(flight.departuretime).tz(this.props.locations.origin.timezone).format();
+    const arrivalTime = moment.unix(flight.arrivaltime).tz(this.props.locations.dest.timezone).format();
+    const depTimeStr = departureTime.slice(11, 16);
+    const arrTimeStr = arrivalTime.slice(11, 16);
+    const chipName = flightId + " | " + depTimeStr + " - " + arrTimeStr
+    return (
+      <Chip
+        key={index}
+        backgroundColor={'#d1e1f9'}
+        onClick={() => this.handleClick(chipName, flight)}
+        style={styles.chip}
+      >{chipName}</Chip>
+    )
+
+  }
+
 
   render() {
-    const handleRequestDelete = this.handleRequestDelete;
-    const handleClick = this.handleClick;
+    const schedules = this.props.schedules.schedules;
+    const hasSchedules = schedules != null && schedules.length > 0;
+    if (hasSchedules)
+      schedules.sort((a, b) => {return a.departuretime > b.departuretime ? 1 : a.departuretime < b.departuretime ? -1 : 0});
+    console.log(schedules);
+
+
     return(
       <Card style={styles.card}>
         <CardTitle title="Flights" subtitle="Select a Flight" />
         <CardText>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-          Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-          Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+          The available flights on your chosen day are listed below. Please Click on your flight and check whether there's a chance of delay.
         </CardText>
         <div style={styles.wrapper}>
-
-          <Chip
-            style={styles.chip}
-          >
-            Text Chip
-          </Chip>
-
-          <Chip
-            onRequestDelete={handleRequestDelete}
-            onClick={handleClick}
-            style={styles.chip}
-          >
-            Deletable Text Chip
-          </Chip>
-
-          <Chip
-            onClick={handleClick}
-            style={styles.chip}
-          >
-            <Avatar src="images/uxceo-128.jpg" />
-            Image Avatar Chip
-          </Chip>
-
-          <Chip
-            onRequestDelete={handleRequestDelete}
-            onClick={handleClick}
-            style={styles.chip}
-          >
-            <Avatar src="images/ok-128.jpg" />
-            Deletable Avatar Chip
-          </Chip>
-
-          <Chip
-            onClick={handleClick}
-            style={styles.chip}
-          >
-            <Avatar icon={<FontIcon className="material-icons">perm_identity</FontIcon>} />
-            FontIcon Avatar Chip
-          </Chip>
-
-          <Chip
-            onRequestDelete={handleRequestDelete}
-            onClick={handleClick}
-            style={styles.chip}
-          >
-            <Avatar color="#444" icon={<SvgIconFace />} />
-            SvgIcon Avatar Chip
-          </Chip>
-
-          <Chip onClick={handleClick} style={styles.chip}>
-            <Avatar size={32}>A</Avatar>
-            Text Avatar Chip
-          </Chip>
-
-          <Chip
-            backgroundColor={blue300}
-            onRequestDelete={handleRequestDelete}
-            onClick={handleClick}
-            style={styles.chip}
-          >
-            <Avatar size={32} color={blue300} backgroundColor={indigo900}>
-              MB
-            </Avatar>
-            Colored Chip
-          </Chip>
+          {hasSchedules && (schedules.map(this.genChip))}
         </div>
 
       </Card>
@@ -125,5 +88,11 @@ class MapCard extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  schedules: state.schedules,
+  locations: state.locations,
+});
 
-export default MapCard;
+const CnxScheduleCard = connect(mapStateToProps, {setMyFlight})(ScheduleCard);
+
+export default CnxScheduleCard;
