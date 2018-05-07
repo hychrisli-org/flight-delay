@@ -17,7 +17,7 @@ const cardStyle = {
   width: 400,
   margin: 20,
   transitionDuration: '0.3s',
-  height: 500,
+  height: 450,
   opacity: 0.7,
   padding: '1%'
 };
@@ -59,8 +59,11 @@ const renderDatePicker = ({ input, defaultValue, meta: { touched, error } }) => 
     errorText = {touched && error}
     {...input}
     value = {input.value !== ''? new Date(input.value) : null}
-    onChange = {(event, value) => {console.log(value); input.onChange(value)}} />
+    onChange = {(event, value) => {console.log(value); input.onChange(value)}}
+  />
 );
+
+
 
 
 class TripInputCard extends Component {
@@ -91,10 +94,7 @@ class TripInputCard extends Component {
       <Card style={cardStyle}>
         <CardTitle title="Search for Your Flight"/>
         <CardText>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-          Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-          Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+          Please choose your origin, destination, preferred airline and departure date. Available flights will be listed once click submit
         </CardText>
 
         <form onSubmit={handleSubmit(this.submit)}>

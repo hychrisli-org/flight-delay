@@ -1,4 +1,4 @@
-import {LOCATIONS_SET, SCHEDULES_SET, MY_FLIGHT_SET} from "./constants";
+import {LOCATIONS_SET, SCHEDULES_SET, MY_FLIGHT_SET, ARRIVAL_WEATHER_SET} from "./constants";
 
 export function setLocations (origin, dest){
   return {
@@ -19,5 +19,12 @@ export function setMyFlight(flight){
   return {
     type: MY_FLIGHT_SET,
     flight
+  }
+}
+
+export function setArrivalWeather(weather){
+  return {
+    type: ARRIVAL_WEATHER_SET,
+    weather
   }
 }

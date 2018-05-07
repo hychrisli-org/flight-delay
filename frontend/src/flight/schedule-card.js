@@ -15,7 +15,7 @@ const styles = {
     transitionDuration: '0.3s',
     height: 500,
     opacity: 0.7,
-    padding: '1%'
+    padding: '5%'
   },
 
   chip: {
@@ -77,10 +77,7 @@ class ScheduleCard extends Component {
       <Card style={styles.card}>
         <CardTitle title="Flights" subtitle="Select a Flight" />
         <CardText>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-          Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-          Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+          The available flights on your chosen day are listed below. Please Click on your flight and check whether there's a chance of delay.
         </CardText>
         <div style={styles.wrapper}>
           {hasSchedules && (schedules.map(this.genChip))}
