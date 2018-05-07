@@ -8,6 +8,7 @@ import {
   GoogleMap,
   Marker
 } from "react-google-maps";
+import {connect} from "react-redux";
 
 const MyMapComponent = compose(
   withProps({
@@ -50,7 +51,7 @@ const MyMapComponent = compose(
     zoom={props.zoom}
     onZoomChanged={props.onZoomChanged}
   >
-    <Markers mapProjection={props.mapProjection} zoom={props.zoom}/>
+    <CnxMarkers mapProjection={props.mapProjection} zoom={props.zoom}/>
   </GoogleMap>
 ));
 
@@ -62,13 +63,23 @@ class Markers extends React.Component {
   };
 
   render() {
+    console.log("locations", this.props.locations);
+    const {origin, dest} = this.props.locations;
+    let position1 = this.state.position1;
+    let position2 = this.state.position2;
+
+    if (origin != null && dest != null) {
+      position1 = new google.maps.LatLng({lat: origin.latitude, lng: origin.longitude});
+      position2 = new google.maps.LatLng({lat: dest.latitude, lng: dest.longitude});
+    }
+
     return (
       <div>
-        <Marker position={this.state.position1} />
-        <Marker position={this.state.position2} />
+        <Marker position={position1} />
+        <Marker position={position2} />
         <CurveMarker
-          pos1={this.state.position1}
-          pos2={this.state.position2}
+          pos1={position1}
+          pos2={position2}
           mapProjection={this.props.mapProjection}
           zoom={this.props.zoom}
         />
@@ -76,6 +87,13 @@ class Markers extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  locations: state.locations,
+});
+
+const CnxMarkers = connect(mapStateToProps)(Markers);
+
 
 const CurveMarker = ({ pos1, pos2, mapProjection, zoom }) => {
   if (!mapProjection) return <div />;

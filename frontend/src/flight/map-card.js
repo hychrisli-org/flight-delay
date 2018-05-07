@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import {Card} from 'material-ui/Card';
 import Map from './map'
+import locations from "../stores/locations-reducer";
+import {scheduleRequest} from "../trip/actions";
+import {connect} from "react-redux";
 
 const cardStyle = {
   display: 'inline-block',
@@ -15,13 +18,12 @@ const cardStyle = {
 class MapCard extends Component {
 
   render() {
-    return(
+    return (
       <Card style={cardStyle}>
         <Map/>
       </Card>
     )
   }
 }
-
 
 export default MapCard;

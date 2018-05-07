@@ -12,14 +12,11 @@ import {
   SCHEDULE_ERROR
 } from './constants';
 import {handleApiErrors} from "../lib/api-errors";
-import {setSchedules} from "../schedules/actions";
+import {setLocations, setSchedules} from "../stores/actions";
 
 
 const airportUrl = `${process.env.REACT_APP_FLIGHTAWARE_URL}/AirportInfo`;
 const scheduleUrl = `${process.env.REACT_APP_FLIGHTAWARE_URL}/AirlineFlightSchedules`;
-const username = `${process.env.REACT_APP_FLIGHTWARE_USERNAME}`;
-const password = `${process.env.REACT_APP_FLIGHTWARE_PASSWORD}`;
-
 
 function timeout(ms, promise) {
   return new Promise(function(resolve, reject) {
@@ -46,16 +43,6 @@ function tripApi(startDate, endDate, origin, destination, airline,howMany){
 
     })
     .catch(handleApiErrors);
-
-
-  /*return fetch(url, {
-    method: 'GET'
-  })
-    .then(handleApiErrors)
-    .then(response => response.json())
-    .then(json => json)
-    .then(error => {throw error})*/
-
 }
 
 function airportApi(icao){
@@ -96,11 +83,12 @@ function* tripFlow(action){
     startDate = startDate.unix();
     const endDate = startDate + 86400;
 
-    let flights = yield call(tripApi, startDate, endDate, origin, dest, form.airline, 10)
+    let flights = yield call(tripApi, startDate, endDate, origin, dest, form.airline, 10);
     flights = flights.AirlineFlightSchedulesResult.data;
     console.log("my Results ", flights);
 
     yield put({type: SCHEDULE_SUCCESS});
+    yield put(setLocations(originObj.AirportInfoResult, destObj.AirportInfoResult));
     yield put(setSchedules(flights))
 
   } catch (error) {

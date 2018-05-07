@@ -1,0 +1,2 @@
+export const LOCATIONS_SET = 'LOCATIONS_SET';
+export const SCHEDULES_SET = 'SCHEDULES_SET';
