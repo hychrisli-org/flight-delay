@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
 import {Card} from 'material-ui/Card';
-import Map from './map'
-import locations from "../stores/locations-reducer";
-import {scheduleRequest} from "../trip/actions";
-import {connect} from "react-redux";
+import Map from './map';
 
 const cardStyle = {
   display: 'inline-block',

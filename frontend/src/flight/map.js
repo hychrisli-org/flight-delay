@@ -1,7 +1,6 @@
 /*global google*/
 import React from "react";
-import ReactDOM from "react-dom";
-import { compose, withProps, withState, lifecycle } from "recompose";
+import { compose, withProps, lifecycle } from "recompose";
 import {
   withScriptjs,
   withGoogleMap,

@@ -1,9 +1,7 @@
 import moment from 'moment'
-import momentTz from 'moment-timezone'
-import base64 from 'base-64';
+import 'moment-timezone'
 import queryString from 'query-string'
 import {call, put, takeLatest} from 'redux-saga/effects'
-import rest from "restler";
 
 
 import {
@@ -68,15 +66,16 @@ function* tripFlow(action){
 
     //startDate = new Date(form.date).getTIm / 1000;
     const origin = form.fromAirport.iata;
-    const originObj = yield call(airportApi, origin);
+    let originObj = yield call(airportApi, origin);
+    originObj.AirportInfoResult.timezone = originObj.AirportInfoResult.timezone.substring(1);
     console.log(originObj);
 
     const dest = form.toAirport.iata;
-    const destObj = yield call(airportApi, dest);
+    let destObj = yield call(airportApi, dest);
+    destObj.AirportInfoResult.timezone = destObj.AirportInfoResult.timezone.substring(1);
     console.log(destObj);
 
     let timezone = originObj.AirportInfoResult.timezone;
-    timezone=timezone.substring(1);
     console.log(timezone);
 
     let startDate = moment.tz(dateStr, timezone);
