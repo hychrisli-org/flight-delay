@@ -18,7 +18,7 @@ export default class Wait extends React.Component{
   render(){
     return(
       <Paper style={styles.paperContainer}>
-        <CircularProgress size={80} thickness={5} />
+        <CircularProgress size={100} thickness={8} />
       </Paper>
     )
   }
