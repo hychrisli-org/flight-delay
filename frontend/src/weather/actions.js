@@ -2,7 +2,16 @@ import {
   WEATHER_REQUESTING
 } from "./constants";
 
-export const requestWeather = (form => ({
+export function requestWeather(form){
+
+  return {
   type: WEATHER_REQUESTING,
   form
-}));
+  }
+}
+
+export function resetWeather(){
+  return {
+    type: null
+  }
+}

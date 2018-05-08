@@ -17,7 +17,8 @@ import {
   purple200,
 } from 'material-ui/styles/colors';
 
-const style = {margin: 5};
+import {connect} from "react-redux";
+import {scheduleRequest} from "../trip/actions";
 
 const styles = {
 
@@ -45,8 +46,9 @@ const styles = {
 class WeatherCard extends Component {
 
 
-  render() {
 
+  render() {
+    const {temp, vis, liqu_depth, snow_depth} = this.props.arrivalWeather.weather;
     return(
       <Card style={styles.card}>
         <CardTitle title="Weather" subtitle="Destination Airport" />
@@ -54,7 +56,7 @@ class WeatherCard extends Component {
           <ListItem
             leftAvatar={<Avatar src={thermoImg} backgroundColor={blue200} />}
           >
-            Temperature: 12 &deg;C
+            Temperature:  {temp} &deg;C
           </ListItem>
           <ListItem
             disabled={true}
@@ -62,7 +64,7 @@ class WeatherCard extends Component {
               <Avatar src={visImg}  backgroundColor={purple200}/>
             }
           >
-           Visibility: 12000 m
+           Visibility: {vis} m
           </ListItem>
           <ListItem
             disabled={true}
@@ -70,7 +72,7 @@ class WeatherCard extends Component {
               <Avatar src={liquImg}  backgroundColor={green200}/>
             }
           >
-            Liquid Depth: 0 cm
+            Liquid Depth: {liqu_depth} cm
           </ListItem>
           <ListItem
             disabled={true}
@@ -78,7 +80,7 @@ class WeatherCard extends Component {
               <Avatar src={snowImg}  backgroundColor={orange200}/>
             }
           >
-            Snow Depth: 0 cm
+            Snow Depth: {snow_depth} cm
           </ListItem>
         </List>
       </Card>
@@ -86,4 +88,10 @@ class WeatherCard extends Component {
   }
 }
 
-export default WeatherCard
+const mapStateToProps = state => ({
+  arrivalWeather: state.arrivalWeather,
+});
+
+const connected = connect(mapStateToProps)(WeatherCard);
+
+export default connected;

@@ -6,6 +6,8 @@ import schedules from './stores/schedules-reducer'
 import myflight from './stores/myflight-reducer'
 import weather from './weather/reducer'
 import arrivalWeather from './stores/arrival-weather-reducer'
+import predict from './predict/reducer'
+import predRes from './stores/prediction-reducer'
 
 const IndexReducer = combineReducers({
   form,
@@ -14,7 +16,9 @@ const IndexReducer = combineReducers({
   locations,
   myflight,
   weather,
-  arrivalWeather
+  arrivalWeather,
+  predict,
+  predRes
 });
 
 export default IndexReducer;

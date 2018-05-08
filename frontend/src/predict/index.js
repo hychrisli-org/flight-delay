@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {Card, CardTitle, CardText, CardMedia} from 'material-ui/Card';
 import delayImg from '../images/delay.png'
 import ontimeImg from '../images/on-schedule.png'
+import {connect} from "react-redux";
+import {scheduleRequest} from "../trip/actions";
 
 const style = {margin: 5};
 
@@ -33,13 +35,22 @@ class PredictCard extends Component {
 
   render() {
 
+    const isDelay = this.props.predRes.pred === 1;
+
     return(
       <Card style={styles.card}>
         <CardTitle title="Prediction" subtitle="Whether there's delay" />
-        <CardMedia><img src={delayImg} alt="" /></CardMedia>
+        {isDelay && <CardMedia><img src={delayImg} alt="" /></CardMedia>}
+        { !isDelay && <CardMedia><img src={ontimeImg} alt="" /></CardMedia>}
       </Card>
     )
   }
 }
 
-export default PredictCard
+const mapStateToProps = state => ({
+  predRes: state.predRes,
+});
+
+const connected = connect(mapStateToProps)(PredictCard);
+
+export default connected

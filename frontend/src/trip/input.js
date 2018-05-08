@@ -11,6 +11,7 @@ import PropTypes from 'prop-types'
 
 
 import {scheduleRequest} from './actions';
+import {resetWeather} from "../weather/actions";
 
 const cardStyle = {
   display: 'inline-block',
@@ -84,6 +85,7 @@ class TripInputCard extends Component {
   submit = (values) =>  {
     console.log(values);
     this.props.scheduleRequest(values);
+    //this.props.dispatch(resetWeather());
   };
 
   render() {

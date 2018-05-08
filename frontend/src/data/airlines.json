@@ -3,8 +3,7 @@
     "United Airlines (UAL)",
     "American Airlines (AAL)",
     "Southwest Airlines (SWA)",
-    "Delta Airlines (DAL)",
-    "UAL, AAL, DAL, SWA"],
+    "Delta Airlines (DAL)"],
   "info":{
     "United Airlines (UAL)" : "UAL",
     "American Airlines (AAL)": "AAL",
