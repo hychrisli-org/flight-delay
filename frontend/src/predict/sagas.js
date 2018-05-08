@@ -8,6 +8,7 @@ import {
   PREDICT_REQUESTING
 } from './constants';
 import {handleApiErrors} from "../lib/api-errors";
+import {setPredResult} from "../stores/actions";
 
 const predictUrl = `${process.env.REACT_APP_PREDICT_URL}`;
 
@@ -37,7 +38,8 @@ function* predictFlow(action){
     console.log("preidctFlow", form);
     const pred = yield call(predictApi, form);
     console.log(pred);
-    yield put({type:PREDICT_SUCCESS})
+    yield put({type:PREDICT_SUCCESS});
+    yield put(setPredResult(pred));
   } catch (error) {
     yield put({type: PREDICT_ERROR, error});
   }

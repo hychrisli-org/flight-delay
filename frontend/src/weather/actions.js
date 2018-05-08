@@ -4,10 +4,14 @@ import {
 
 export function requestWeather(form){
 
-  console.log(form);
-
   return {
   type: WEATHER_REQUESTING,
   form
+  }
+}
+
+export function resetWeather(){
+  return {
+    type: null
   }
 }
