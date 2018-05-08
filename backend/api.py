@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
 from data_handler import readAirportClusters
 from datetime import datetime
 from sklearn.preprocessing import normalize
@@ -6,15 +7,19 @@ from sklearn.externals import joblib
 import pandas as pd
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['TRAP_BAD_REQUEST_ERRORS'] = True
 clusterDict = readAirportClusters()
 xgboost_clusters = ['pkls/xgboost_cluster0.pkl',
                     'pkls/xgboost_cluster1.pkl',
                     'pkls/xgboost_cluster2.pkl',
                     'pkls/xgboost_cluster3.pkl']
+carrierLkp = { 'UAL': 'UA', 'AAL': 'AA', 'DAL':'DL', 'SWA':'WN'}
 
 
 @app.route('/classify', methods = ['GET', 'POST'])
+@cross_origin()
 def classify():
     if request.method == 'GET':
         """ Return Greeting """
@@ -22,17 +27,21 @@ def classify():
 
     if request.method == 'POST':
 
-        origin = getReqVal('origin')
-        dest = getReqVal('dest')
-        airline = getReqVal('airline')
-        depTimeStr = getReqVal('depTimeStr')
-        arrTimeStr = getReqVal('arrTimeStr')
-        distance = request.form.get('distance')
+        form = request.get_json()
+        print(form)
+        origin = form.get('origin')
+        dest =form.get('dest')
+        airline = carrierLkp.get(form.get('airline'))
+        depTimeStr = form.get('depTimeStr')
+        arrTimeStr = form.get('arrTimeStr')
+        distance = form.get('distance')
+
+        print (origin, dest, airline, depTimeStr, arrTimeStr, distance)
 
         if not (origin and dest and airline and depTimeStr and arrTimeStr and distance):
             return replyMsg("Contains Empty Input")
 
-        print (origin, dest, airline, depTimeStr, arrTimeStr, distance)
+
 
         cluster = clusterDict.get(dest)
         depDatetime = datetime.strptime(str(depTimeStr), '%Y-%m-%d %H:%M:%S')
@@ -59,7 +68,7 @@ def classify():
         res = gs_best.predict(xNorm)
         print(res)
 
-        return jsonify({"pred": res})
+        return jsonify({"pred": res[0]})
 
 def replyMsg(msg):
     return jsonify({"Message": msg})

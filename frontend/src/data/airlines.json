@@ -1,13 +1,13 @@
 {
   "dataSource": [
-    "United Airlines (UA)",
-    "American Airlines (AA)",
-    "Southwest Airlines (WN)",
-    "Delta Airlines (DL)"],
+    "United Airlines (UAL)",
+    "American Airlines (AAL)",
+    "Southwest Airlines (SWA)",
+    "Delta Airlines (DAL)"],
   "info":{
-    "United Airlines (UAL)" : "UA",
-    "American Airlines (AAL)": "AA",
-    "Southwest Airlines (SWA)": "WN",
-    "Delta Airlines (DAL)": "DL"
+    "United Airlines (UAL)" : "UAL",
+    "American Airlines (AAL)": "AAL",
+    "Southwest Airlines (SWA)": "SWA",
+    "Delta Airlines (DAL)": "DAL"
   }
 }

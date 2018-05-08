@@ -7,7 +7,6 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) =>{
-  console.log(req);
   const iata = req.body.iata;
   const localTsStr = req.body.localTsStr;
   db.getWeahter(iata, localTsStr, (err, data) => {

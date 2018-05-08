@@ -39,9 +39,7 @@ function* weatherFlow(action){
 
   try {
     const{form} = action;
-    console.log("here", form);
     const arrivalWeather = yield call(weatherApi, form.iata, form.localTsStr);
-    console.log(arrivalWeather);
     yield put(setArrivalWeather(arrivalWeather));
     yield put({type:WEATHER_SUCCESS})
   } catch (error) {
