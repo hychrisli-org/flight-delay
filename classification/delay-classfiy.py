@@ -31,7 +31,7 @@ normX = normalize(X, axis=0)
 print (normX[1])
 X_train, X_test, y_train, y_test = train_test_split(normX, Y, test_size=0.25, stratify=Y)
 
-clf = RandomForestClassifier(n_estimators=300, verbose=True)
+clf = RandomForestClassifier(n_estimators=50, verbose=True)
 clf = clf.fit(X_train, y_train)
 pdY = clf.predict(X_test)
 print(f1_score(y_test, pdY, average='macro'))
