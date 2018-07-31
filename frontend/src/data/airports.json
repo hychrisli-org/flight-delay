@@ -1,0 +1,65 @@
+{
+
+  "dataSource":
+  [
+    "San Francisco Intl (SFO)",
+    "Atlanta H. Jackson Intl (ATL)",
+    "Boston Logan Intl (BOS)",
+    "Los Angeles Intl (LAX)",
+    "Chicago O'Hare Intl (ORD)",
+    "Denver Intl (DEN)",
+    "New York J.F. Kennedy Intl (JFK)",
+    "Minneapolis/St. Paul Intl (MSP)"
+  ],
+
+  "info":{
+    "San Francisco Intl (SFO)":
+    {
+      "iata": "SFO",
+      "lat": 37.61899,
+      "lot": -122.375
+    },
+    "Atlanta H. Jackson Intl (ATL)":
+    {
+      "iata": "ATL",
+      "lat": 33.63669,
+      "lot": -84.4281
+    },
+    "Boston Logan Intl (BOS)":
+    {
+      "iata": "BOS",
+      "lat": 42.36429,
+      "lot": -71.00520
+    },
+    "Los Angeles Intl (LAX)":
+    {
+      "iata": "LAX",
+      "lat": 33.94250,
+      "lot": -118.40799
+    },
+    "Chicago O'Hare Intl (ORD)":
+    {
+      "iata": "ORD",
+      "lat": 41.97859955,
+      "lot": -87.90480042
+    },
+    "Denver Intl (DEN)":
+    {
+      "iata": "DEN",
+      "lat": 39.8616667,
+      "lot":  -104.6731667
+    },
+    "New York J.F. Kennedy Intl (JFK)":
+    {
+      "iata": "JFK",
+      "lat": 40.63980,
+      "lot": -73.77890
+    },
+    "Minneapolis/St. Paul Intl (MSP)":
+    {
+      "iata": "MSP",
+      "lat": 44.88199,
+      "lot": -93.22180
+    }
+  }
+}

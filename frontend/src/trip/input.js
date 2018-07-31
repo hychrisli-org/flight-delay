@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import {Card, CardActions, CardTitle, CardText} from 'material-ui/Card';
 import {Field, reduxForm } from 'redux-form';
 import {connect} from 'react-redux'
 import FlatButton from 'material-ui/FlatButton';
@@ -8,16 +8,17 @@ import DatePicker from 'material-ui/DatePicker';
 import airports from '../data/airports';
 import airlines from '../data/airlines';
 import PropTypes from 'prop-types'
-import moment from 'moment';
+
 
 import {scheduleRequest} from './actions';
+import {resetWeather} from "../weather/actions";
 
 const cardStyle = {
   display: 'inline-block',
   width: 400,
   margin: 20,
   transitionDuration: '0.3s',
-  height: 500,
+  height: 450,
   opacity: 0.7,
   padding: '1%'
 };
@@ -59,8 +60,11 @@ const renderDatePicker = ({ input, defaultValue, meta: { touched, error } }) => 
     errorText = {touched && error}
     {...input}
     value = {input.value !== ''? new Date(input.value) : null}
-    onChange = {(event, value) => {console.log(value); input.onChange(value)}} />
+    onChange = {(event, value) => {console.log(value); input.onChange(value)}}
+  />
 );
+
+
 
 
 class TripInputCard extends Component {
@@ -81,6 +85,7 @@ class TripInputCard extends Component {
   submit = (values) =>  {
     console.log(values);
     this.props.scheduleRequest(values);
+    //this.props.dispatch(resetWeather());
   };
 
   render() {
@@ -91,10 +96,7 @@ class TripInputCard extends Component {
       <Card style={cardStyle}>
         <CardTitle title="Search for Your Flight"/>
         <CardText>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-          Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-          Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+          Please choose your origin, destination, preferred airline and departure date. Available flights will be listed once click submit
         </CardText>
 
         <form onSubmit={handleSubmit(this.submit)}>
